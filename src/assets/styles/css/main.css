@@ -1,2 +1,3 @@
 @import './base.css';
 @import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
