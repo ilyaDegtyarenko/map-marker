@@ -1,0 +1,70 @@
+# General patterns
+**/.DS_Store
+**/Thumbs.db
+
+# Node.js specific
+**/node_modules/
+**/.nuxt/
+**/.output/
+**/.vercel/
+**/.netlify/
+**/.next
+
+# IDE and editor files
+**/.idea/
+**/.vscode/
+**/.vs
+**/*.swp
+**/*.swo
+**/.editorconfig
+
+# Build outputs
+**/dist/
+**/build/
+**/out/
+
+# Test and debug files
+**/test/
+**/tests/
+**/*.log
+**/phpunit.xml
+**/phpunit.xml.dist
+
+# Version control
+**/.git/
+**/.gitignore
+**/.gitattributes
+
+# Environment and secrets
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.crt
+**/secrets.dev.yaml
+**/values.dev.yaml
+
+# Documentation and temporary files
+**/docs/
+**/*.md
+**/README*
+**/LICENSE*
+**/tmp/
+**/temp/
+**/*.tmp
+
+# Docker specific
+**/Dockerfile*
+**/docker-compose*
+**/.dockerignore
+**/compose.y*ml
+**/compose.*.y*ml
+**/composer.phar
+
+# Project-specific
+**/.local/
+**/local/
+
+# Other
+**/.classpath
+**/.cache

@@ -1,0 +1,28 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/common/node/Dockerfile
+      target: development
+      args:
+        NODE_VERSION: 23.11.0
+        NODE_ENV: development
+        NODE_PORT: ${NODE_PORT}
+    container_name: map_marker_node
+    working_dir: /app
+    tty: true # Enables an interactive terminal
+    stdin_open: true # Keeps standard input open for 'docker exec'
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+      - "24678:24678"
+    env_file:
+      - ./.env
+    environment:
+      NODE_ENV: development
+      NODE_PORT: ${NODE_PORT}
+    volumes:
+      - ./:/app
+      - node-modules-development:/app/node_modules
+
+volumes:
+  node-modules-development:
