@@ -66,8 +66,6 @@
       }
     })
 
-    mapStore.resetFilters()
-
     mapStore.places
       .filter((place) => mapStore.placeTypeFilter.includes(place.type))
       .forEach(addMarker)
