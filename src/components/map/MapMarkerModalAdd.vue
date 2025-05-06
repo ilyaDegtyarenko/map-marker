@@ -12,7 +12,7 @@
   import { getPlaceTypeOptions } from '@/utils/getPlaceTypeOptions.ts'
 
   type Props = {
-    coordinates?: L.LatLngLiteral
+    coordinates?: L.LatLngLiteral | null
   }
 
   type Emit = {
@@ -40,11 +40,11 @@
 
   const formRules = {
     name: [
-      v => !!v || t('form.rule.place.name-required'),
-      v => (v && v.length <= 20) || t('form.rule.place.name-max'),
+      (v: string) => !!v || t('form.rule.place.name-required'),
+      (v: string) => (v && v.length <= 20) || t('form.rule.place.name-max'),
     ],
-    type: [ v => !!v || t('form.rule.place.type-required') ],
-    coordinates: [ v => !!v || t('form.rule.place.coordinates-required') ],
+    type: [ (v: string) => !!v || t('form.rule.place.type-required') ],
+    coordinates: [ (v: number) => !!v || t('form.rule.place.coordinates-required') ],
   }
 
   const maxPlaceId = computed<number>(() => {

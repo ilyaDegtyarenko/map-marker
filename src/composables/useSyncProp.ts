@@ -18,6 +18,8 @@ export const useSyncProp = <T>(
         options.onGet(props[key])
       }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       return props[key]
     },
     set(value: T) {

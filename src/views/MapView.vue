@@ -33,7 +33,7 @@
   const mapStore = useMapStore()
 
   const selectedMarker = ref<MarkerItem | null>(null)
-  const selectedCoordinates = ref<L.LatLngTuple | null>(null)
+  const selectedCoordinates = ref<L.LatLngLiteral | null>(null)
   const showMarkerAddingForm = ref<boolean>(false)
 
   const onMapClick = (event: L.LeafletMouseEvent): void => {

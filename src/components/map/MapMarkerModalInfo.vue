@@ -26,7 +26,7 @@
 
   const { t } = useI18n()
 
-  const itemModel = useSyncProp<MarkerItem>(props, 'item', emit)
+  const itemModel = useSyncProp<MarkerItem | null>(props, 'item', emit)
 
   const showModal = computed<boolean>({
     get() {
@@ -38,7 +38,7 @@
   })
 
   const cardTitle = computed<string>(() => {
-    if (isPlaceMarker(itemModel.value)) {
+    if (isPlaceMarker(itemModel.value!)) {
       return t('placeType.' + itemModel.value.type)
     }
 
@@ -46,6 +46,10 @@
   })
 
   const listItems = computed<ListItem[]>(() => {
+    if (!itemModel.value) {
+      return []
+    }
+
     if (isPlaceMarker(itemModel.value)) {
       return [
         {
