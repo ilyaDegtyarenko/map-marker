@@ -1,0 +1,26 @@
+{
+  "initialLocation": {
+    "lat": 48.46455576704108,
+    "lng": 35.04610776901246
+  },
+  "places": [
+    {
+      "id": 1,
+      "name": "Магазин А",
+      "type": "store",
+      "coordinates": [50.4501, 30.5234]
+    },
+    {
+      "id": 2,
+      "name": "Кафе Б",
+      "type": "cafe",
+      "coordinates": [50.4511, 30.522]
+    },
+    {
+      "id": 3,
+      "name": "Офіс В",
+      "type": "office",
+      "coordinates": [50.4522, 30.5205]
+    }
+  ]
+}
