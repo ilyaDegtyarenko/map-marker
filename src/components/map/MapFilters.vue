@@ -19,7 +19,13 @@
       @click="appStore.showDrawer = !appStore.showDrawer"
     >
       <template v-slot:prepend>
-        <v-icon icon="mdi-filter" />
+        <v-badge
+          color="red"
+          dot
+          :model-value="mapStore.placeTypeFilter.length < 3"
+        >
+          <v-icon icon="mdi-filter" />
+        </v-badge>
       </template>
 
       {{ $t('filters') }}
