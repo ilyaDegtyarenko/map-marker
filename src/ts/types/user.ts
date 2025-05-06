@@ -4,8 +4,8 @@ export type UserAddress = {
   city: string
   zipcode: string
   geo: {
-    lat: string
-    lng: string
+    lat: number
+    lng: number
   }
 }
 
