@@ -3,6 +3,7 @@
   lang="ts"
 >
   import type { MarkerItem } from '@/ts/types/map.ts'
+  import type { User } from '@/ts/types/user.ts'
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useSyncProp } from '@/composables/useSyncProp.ts'
@@ -10,6 +11,7 @@
 
   type Props = {
     item: MarkerItem
+    nearbyUsers: User[]
   }
 
   type ListItem = {
@@ -45,6 +47,10 @@
     return t('person')
   })
 
+  const nearbyUsersNames = computed<string>(() => {
+    return props.nearbyUsers.map(({ name }) => name).join(', ')
+  })
+
   const listItems = computed<ListItem[]>(() => {
     if (!itemModel.value) {
       return []
@@ -63,6 +69,10 @@
         {
           title: t('coordinates'),
           subtitle: itemModel.value.coordinates.join(', '),
+        },
+        {
+          title: t('nearby-people'),
+          subtitle: nearbyUsersNames.value,
         },
       ]
     }

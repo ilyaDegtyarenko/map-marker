@@ -178,6 +178,7 @@
       v-if="selectedMarker"
       key="marker-modal-info"
       v-model:item="selectedMarker"
+      :nearby-users="nearbyUsers"
     />
 
     <LazyMapMarkerModalAdd
