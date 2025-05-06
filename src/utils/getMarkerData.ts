@@ -10,9 +10,9 @@ type MarkerData = {
   icon: L.Icon
 }
 
-export const getMarkerData = (markerItem: MarkerItem): MarkerData => {
+export const getMarkerData = (markerItem: MarkerItem, active = false): MarkerData => {
   const icon: L.IconOptions = {
-    iconUrl: '/img/marker-person.png',
+    iconUrl: `/img/marker-person${ active ? '-active' : '' }.png`,
     iconSize: [ 32, 32 ],
     iconAnchor: [ 16, 32 ],
     popupAnchor: [ 0, -32 ],
@@ -26,14 +26,14 @@ export const getMarkerData = (markerItem: MarkerItem): MarkerData => {
       type: 'user',
       name: markerItem.name,
       coordinates: [
-        parseFloat(markerItem.address.geo.lat),
-        parseFloat(markerItem.address.geo.lng),
+        markerItem.address.geo.lat,
+        markerItem.address.geo.lng,
       ],
       icon: L.icon(icon),
     }
   }
 
-  icon.iconUrl = `/img/marker-${ markerItem.type }.png`
+  icon.iconUrl = `/img/marker-${ markerItem.type }${ active ? '-active' : '' }.png`
 
   return {
     type: markerItem.type,
