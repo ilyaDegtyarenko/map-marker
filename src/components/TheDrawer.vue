@@ -13,6 +13,7 @@
     temporary
     :scrim="false"
     location="right"
+    class="!z-[1001]"
   >
     <div
       id="drawer-content"
