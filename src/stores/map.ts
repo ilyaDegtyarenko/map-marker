@@ -16,12 +16,20 @@ export const useMapStore = defineStore('mapStore', () => {
 
   const isDataLoaded = computed<boolean>(() => {
     return Boolean(
-      places.value.length &&
-        users.value.length &&
-        initialLocation.value.lat &&
-        initialLocation.value.lng
+      places.value.length
+      && users.value.length
+      && initialLocation.value.lat
+      && initialLocation.value.lng,
     )
   })
+
+  const addPlace = (place: Place): void => {
+    places.value.push(place)
+  }
+
+  const resetFilters = (): void => {
+    placeTypeFilter.value = Object.values(PlaceTypeEnum)
+  }
 
   return {
     places,
@@ -30,5 +38,8 @@ export const useMapStore = defineStore('mapStore', () => {
     initialLocation,
 
     isDataLoaded,
+
+    addPlace,
+    resetFilters,
   }
 })
