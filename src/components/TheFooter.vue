@@ -14,8 +14,10 @@
 <template>
   <v-footer
     app
-    class="justify-center"
+    class="justify-center !z-[1001]"
   >
-    {{ fullYear }} — <span>{{ appTitle }}</span>
+    <div>
+      {{ fullYear }} — <span>{{ appTitle }}</span>
+    </div>
   </v-footer>
 </template>
