@@ -6,5 +6,18 @@
     "office": "Office",
     "store": "Store",
     "cafe": "Cafe"
-  }
+  },
+  "reset": "Reset",
+  "close": "Close",
+  "name": "Name",
+  "type": "Type",
+  "coordinates": "Coordinates",
+  "person": "Person",
+  "phone": "Phone",
+  "add": "Add",
+  "add-place": "Add place",
+  "form.rule.place.name-required": "Name is required",
+  "form.rule.place.name-max": "Name must be 20 characters or less",
+  "form.rule.place.type-required": "Type is required",
+  "form.rule.place.coordinates-required": "Coordinates are required"
 }

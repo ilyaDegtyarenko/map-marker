@@ -6,5 +6,18 @@
     "office": "Офіс",
     "store": "Магазин",
     "cafe": "Кафе"
-  }
+  },
+  "reset": "Скинути",
+  "close": "Закрити",
+  "name": "Назва",
+  "type": "Тип",
+  "coordinates": "Координати",
+  "person": "Людина",
+  "phone": "Телефон",
+  "add": "Додати",
+  "add-place": "Додати місце",
+  "form.rule.place.name-required": "Назва обов'язкова",
+  "form.rule.place.name-max": "Назва має містити не більше 20 символів",
+  "form.rule.place.type-required": "Тип обов'язковий",
+  "form.rule.place.coordinates-required": "Координати обов'язкові"
 }
