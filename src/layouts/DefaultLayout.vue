@@ -29,9 +29,9 @@
         <Suspense>
           <slot />
         </Suspense>
-      </v-layout>
 
-      <TheFooter key="footer" />
+        <TheFooter key="footer" />
+      </v-layout>
     </v-app>
   </v-responsive>
 </template>
