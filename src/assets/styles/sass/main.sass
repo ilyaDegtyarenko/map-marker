@@ -1,0 +1,46 @@
+@use 'parts/transitions'
+
+html,
+body
+  overflow: hidden
+  margin: 0
+  padding: 0
+  height: 100%
+  width: 100%
+
+body
+  box-sizing: border-box
+  word-break: normal
+  line-height: 1.3333733333
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif
+  font-size: 16px
+  font-style: normal
+  font-synthesis: none
+  color: #000
+  background: #fff
+  text-rendering: optimizeLegibility
+  tab-size: 4
+  isolation: isolate
+  -moz-tab-size: 4
+  -webkit-text-size-adjust: 100%
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+
+*,
+:after,
+:before
+  box-sizing: border-box
+  background-repeat: no-repeat
+  margin: 0
+
+input,
+button,
+textarea,
+select
+  font: inherit
+
+@media (prefers-reduced-motion: reduce)
+  *
+    transition: none !important
+    animation: none !important

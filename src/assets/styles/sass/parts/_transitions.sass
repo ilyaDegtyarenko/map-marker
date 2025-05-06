@@ -1,0 +1,74 @@
+.fade-transition
+    &-enter-from,
+    &-leave-to
+        opacity: 0 !important
+
+    &-enter-active,
+    &-leave-active
+        transition: opacity var(--transition-default-duration-with-ease) !important
+
+    &-enter-to,
+    &-leave-from
+        opacity: 1 !important
+
+.scale-transition
+    &-enter-from,
+    &-leave-to
+        transform: scale(0) !important
+
+    &-enter-active,
+    &-leave-active
+        transition: transform var(--transition-default-duration-with-ease) !important
+
+    &-enter-to,
+    &-leave-from
+        transform: scale(1) !important
+
+.slide-x-left-transition,
+.slide-x-right-transition,
+.slide-y-top-transition,
+.slide-y-bottom-transition
+    &-enter-from,
+    &-leave-to
+        opacity: 0
+
+    &-enter-active,
+    &-leave-active
+        pointer-events: none
+        transition: opacity var(--transition-default-duration-with-ease), transform var(--transition-default-duration-with-ease)
+
+    &-enter-to,
+    &-leave-from
+        opacity: 1
+
+.slide-x-left-transition,
+.slide-x-right-transition
+    &-enter-to,
+    &-leave-from
+        transform: translateX(0)
+
+.slide-y-top-transition,
+.slide-y-bottom-transition
+    &-enter-to,
+    &-leave-from
+        transform: translateY(0)
+
+.slide-x-left-transition
+    &-enter-from,
+    &-leave-to
+        transform: translateX(-80%)
+
+.slide-x-right-transition
+    &-enter-from,
+    &-leave-to
+        transform: translateX(80%)
+
+.slide-y-top-transition
+    &-enter-from,
+    &-leave-to
+        transform: translateY(-80%)
+
+.slide-y-bottom-transition
+    &-enter-from,
+    &-leave-to
+        transform: translateY(80%)
