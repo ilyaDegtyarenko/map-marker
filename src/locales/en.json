@@ -1,0 +1,10 @@
+{
+  "loading": "Loading",
+  "filters": "Filters",
+  "places": "Places",
+  "placeType": {
+    "office": "Office",
+    "store": "Store",
+    "cafe": "Cafe"
+  }
+}
