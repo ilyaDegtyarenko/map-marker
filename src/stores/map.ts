@@ -9,6 +9,7 @@ export const useMapStore = defineStore('mapStore', () => {
   const places = ref<Place[]>([])
   const placeTypeFilter = ref<PlaceTypeEnum[]>(Object.values(PlaceTypeEnum))
   const users = ref<User[]>([])
+  const userShowAllFilter = ref<boolean>(false)
   const initialLocation = shallowRef<LatLngLiteral>({
     lat: 48.46455576704108,
     lng: 35.04610776901246,
@@ -30,12 +31,15 @@ export const useMapStore = defineStore('mapStore', () => {
 
   const resetFilters = (): void => {
     placeTypeFilter.value = Object.values(PlaceTypeEnum)
+
+    userShowAllFilter.value = false
   }
 
   return {
     places,
     placeTypeFilter,
     users,
+    userShowAllFilter,
     initialLocation,
 
     isDataLoaded,

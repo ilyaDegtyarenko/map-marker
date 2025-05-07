@@ -12,17 +12,17 @@
   import { mapService } from '@/services/map.service.ts'
   import { debounceFn } from '@/utils/debounce.ts'
 
-  import MapFilters from '@/components/map/MapFilters.vue'
+  import MapFilters from '@/components/map/filters/MapFilters.vue'
   import AppPage from '@/components/app/AppPage.vue'
   import MapMarkerModalAddFloatingActivator
-    from '@/components/map/MapMarkerModalAddFloatingActivator.vue'
+    from '@/components/map/marker-modal/MapMarkerModalAddFloatingActivator.vue'
 
   const LazyMapMarkerModalInfo = defineAsyncComponent(
-    () => import('@/components/map/MapMarkerModalInfo.vue'),
+    () => import('@/components/map/marker-modal/MapMarkerModalInfo.vue'),
   )
 
   const LazyMapMarkerModalAdd = defineAsyncComponent(
-    () => import('@/components/map/MapMarkerModalAdd.vue'),
+    () => import('@/components/map/marker-modal/MapMarkerModalAdd.vue'),
   )
 
   const INITIAL_ZOOM = 14
@@ -50,11 +50,11 @@
     showMarkerInfoForm.value = true
 
     if (mapService.isPlaceMarker(markerItem)) {
-      shownearestUsers(markerItem.coordinates)
+      showNearestUsers(markerItem.coordinates)
     }
   }
 
-  const shownearestUsers = (latLng: L.LatLngTuple): void => {
+  const showNearestUsers = (latLng: L.LatLngTuple): void => {
     nearestUsers.value = mapService.getNearestUsers(mapStore.users, latLng)
   }
 
@@ -65,13 +65,13 @@
 
     mapService.clearAllMarkers(map.value)
 
-    const filteredPlaces = mapService
-      .getFilteredPlaces(mapStore.places, mapStore.placeTypeFilter)
-
     mapService.addMarkersToMap(
       map.value,
-      filteredPlaces,
+      mapStore.places,
+      mapStore.users,
       nearestUsers.value,
+      mapStore.placeTypeFilter,
+      mapStore.userShowAllFilter,
       onMarkerClick,
       selectedMarker.value,
     )
@@ -129,6 +129,7 @@
     locale,
     nearestUsers,
     () => mapStore.placeTypeFilter,
+    () => mapStore.userShowAllFilter,
     () => mapStore.places,
   ], updateMarkers)
 </script>

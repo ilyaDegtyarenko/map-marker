@@ -20,5 +20,7 @@
   "form.rule.place.name-max": "Name must be 20 characters or less",
   "form.rule.place.type-required": "Type is required",
   "form.rule.place.coordinates-required": "Coordinates are required",
-  "nearest-people": "Nearest people"
+  "nearest-people": "Nearest people",
+  "people": "People",
+  "show-all": "Show all"
 }

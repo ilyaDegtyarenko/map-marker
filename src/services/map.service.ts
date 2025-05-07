@@ -6,6 +6,7 @@ import { PlaceTypeEnum } from '@/ts/enums/place.ts'
 import L from 'leaflet'
 import axiosInstance from '@/api/axiosInstance.ts'
 import placeApi from '@/api/endpoints/place.api.ts'
+import { userService } from '@/services/user.service.ts'
 
 export const mapService = {
   /**
@@ -176,36 +177,53 @@ export const mapService = {
   },
 
   /**
-   * Adds markers to the specified map for the given places and users.
-   * Each marker can trigger a specified click handler when clicked.
-   * An optional marker can be highlighted as selected.
+   * Adds markers to a Leaflet map based on provided places, users, and filters.
    *
-   * @param map - The map instance where markers will be added.
-   * @param places - An array of place objects to create markers for.
-   * @param users - An array of user objects to create markers for.
-   * @param onClick - The callback function invoked when a marker is clicked.
-   * @param [selectedMarker] - The optional marker item to highlight as selected.
-   *
-   * @returns {void}
+   * @param map - The Leaflet map instance to add markers to.
+   * @param places - A list of places to add as markers on the map.
+   * @param users - A list of users to add as markers on the map.
+   * @param nearestUsers - A list of nearest users to highlight on the map.
+   * @param placeTypeFilter - Filters to specify which types of places should have markers added.
+   * @param userShowAllFilter - A boolean flag indicating if all users should have markers added or just the nearest users.
+   * @param onClick - The callback function that will be triggered when a marker is clicked. It receives a `MarkerItem` as an argument.
+   * @param [selectedMarker] - An optional parameter representing the currently selected marker, if any.
+   * @returns {void} This function does not return any value.
    */
   addMarkersToMap: (
     map: L.Map,
     places: Place[],
     users: User[],
+    nearestUsers: User[],
+    placeTypeFilter: PlaceTypeEnum[],
+    userShowAllFilter: boolean,
     onClick: (markerItem: MarkerItem) => void,
     selectedMarker?: MarkerItem | null,
   ): void => {
-    places.forEach((place) => {
-      return mapService.addMarker(
-        map,
-        place,
-        selectedMarker?.id === place.id,
-        onClick,
-      )
-    })
+    mapService.getFilteredPlaces(places, placeTypeFilter)
+      .forEach((place) => {
+        return mapService.addMarker(
+          map,
+          place,
+          selectedMarker?.id === place.id,
+          onClick,
+        )
+      })
 
-    users.forEach((user) => {
-      mapService.addMarker(map, user, true, onClick)
-    })
+    if (userShowAllFilter) {
+      const nearestUserIds = userService.getUserIds(nearestUsers)
+
+      users.forEach((user) => {
+        mapService.addMarker(
+          map,
+          user,
+          nearestUserIds.includes(user.id),
+          onClick,
+        )
+      })
+    } else {
+      nearestUsers.forEach((user) => {
+        mapService.addMarker(map, user, true, onClick)
+      })
+    }
   },
 }
