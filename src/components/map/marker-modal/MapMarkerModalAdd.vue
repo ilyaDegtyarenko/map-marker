@@ -92,7 +92,7 @@
               v-model="formValues.name"
               :counter="20"
               :rules="formRules.name"
-              :label="$t('name')"
+              :label="$t('place.name')"
               required
             />
 

@@ -9,7 +9,6 @@
   },
   "reset": "Reset",
   "close": "Close",
-  "name": "Name",
   "type": "Type",
   "coordinates": "Coordinates",
   "person": "Person",
@@ -22,5 +21,11 @@
   "form.rule.place.coordinates-required": "Coordinates are required",
   "nearest-people": "Nearest people",
   "people": "People",
-  "show-all": "Show all"
+  "show-all": "Show all",
+  "place": {
+    "name": "Name"
+  },
+  "user": {
+    "name": "Name"
+  }
 }

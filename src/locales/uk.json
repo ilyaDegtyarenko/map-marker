@@ -9,7 +9,6 @@
   },
   "reset": "Скинути",
   "close": "Закрити",
-  "name": "Назва",
   "type": "Тип",
   "coordinates": "Координати",
   "person": "Людина",
@@ -22,5 +21,11 @@
   "form.rule.place.coordinates-required": "Координати обов'язкові",
   "nearest-people": "Люди поблизу",
   "people": "Люди",
-  "show-all": "Показати всіх"
+  "show-all": "Показати всіх",
+  "place": {
+    "name": "Назва"
+  },
+  "user": {
+    "name": "Імʼя"
+  }
 }
