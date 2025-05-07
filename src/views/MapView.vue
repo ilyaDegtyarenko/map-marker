@@ -5,7 +5,7 @@
   import type { MarkerItem } from '@/ts/types/map.ts'
   import type { Place } from '@/ts/types/place.ts'
   import type { User } from '@/ts/types/user.ts'
-  import { defineAsyncComponent, ref, shallowRef, useTemplateRef, watch } from 'vue'
+  import { computed, defineAsyncComponent, ref, shallowRef, useTemplateRef, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import L from 'leaflet'
   import { useMapStore } from '@/stores/map.ts'
@@ -34,11 +34,32 @@
 
   const mapStore = useMapStore()
 
-  const selectedMarker = ref<MarkerItem | null>(null)
+  const selectedPlace = ref<Place | null>(null)
+  const selectedUser = ref<User | null>(null)
   const selectedCoordinates = ref<L.LatLngLiteral | null>(null)
   const showMarkerInfoForm = ref<boolean>(false)
   const showMarkerAddingForm = ref<boolean>(false)
   const nearestUsers = ref<User[]>([])
+
+  const selectedMarker = computed<MarkerItem | null>({
+    get() {
+      return selectedUser.value || selectedPlace.value
+    },
+    set(value) {
+      if (!value) {
+        selectedPlace.value = null
+        selectedUser.value = null
+
+        return
+      }
+
+      if (mapService.isPlaceMarker(value)) {
+        selectedPlace.value = value
+      } else {
+        selectedUser.value = value
+      }
+    },
+  })
 
   const onMapClick = (event: L.LeafletMouseEvent): void => {
     selectedCoordinates.value = event.latlng
@@ -46,11 +67,7 @@
   }
 
   const onMarkerClick = (markerItem: MarkerItem): void => {
-    if (
-      selectedMarker.value
-      && mapService.isPlaceMarker(selectedMarker.value)
-      && (selectedMarker.value.id === markerItem.id)
-    ) {
+    if (selectedPlace.value?.id === markerItem.id) {
       clearSelectedMarker()
 
       return
@@ -94,7 +111,7 @@
       mapStore.userShowAllFilter,
       onMarkerClick,
       clearSelectedMarker,
-      selectedMarker.value,
+      selectedPlace.value,
     )
   }, 500)
 

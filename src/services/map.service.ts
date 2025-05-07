@@ -184,7 +184,7 @@ export const mapService = {
    * @param placeTypeFilter An array of place types used to filter which places should be included as markers.
    * @param onClick A callback function invoked when a marker is clicked, receiving the clicked marker as its argument.
    * @param clearSelectedMarker A function invoked to clear the currently selected marker when its criteria are no longer met.
-   * @param [selectedMarker] The currently selected marker, if any, to differentiate its appearance or remove it if it no longer matches the filter.
+   * @param [selectedPlace] The currently selected marker, if any, to differentiate its appearance or remove it if it no longer matches the filter.
    * @returns {void}
    */
   addPlaceMarkers: (
@@ -193,14 +193,13 @@ export const mapService = {
     placeTypeFilter: PlaceTypeEnum[],
     onClick: (markerItem: MarkerItem) => void,
     clearSelectedMarker: VoidFunction,
-    selectedMarker?: MarkerItem | null,
+    selectedPlace?: Place | null,
   ): void => {
     const filteredPlaces = mapService.getFilteredPlaces(places, placeTypeFilter)
 
     if (
-      selectedMarker
-      && mapService.isPlaceMarker(selectedMarker)
-      && !filteredPlaces.some((place) => place.id === selectedMarker.id)
+      selectedPlace
+      && !filteredPlaces.some((place) => place.id === selectedPlace.id)
     ) {
       clearSelectedMarker()
     }
@@ -209,7 +208,7 @@ export const mapService = {
       return mapService.addMarker(
         map,
         place,
-        selectedMarker?.id === place.id,
+        selectedPlace?.id === place.id,
         onClick,
       )
     })
@@ -265,7 +264,7 @@ export const mapService = {
    * @param userShowAllFilter - Switch to determine if all users should be displayed, regardless of the nearest filter.
    * @param onClick - Callback invoked when a marker is clicked. Receives the clicked marker item as an argument.
    * @param clearSelectedMarker - Callback invoked to clear the currently selected marker on the map.
-   * @param [selectedMarker] - The currently selected marker item, or null/undefined if none is selected.
+   * @param [selectedPlace] - The currently selected marker item, or null/undefined if none is selected.
    */
   addMarkersToMap: (
     map: L.Map,
@@ -276,7 +275,7 @@ export const mapService = {
     userShowAllFilter: boolean,
     onClick: (markerItem: MarkerItem) => void,
     clearSelectedMarker: VoidFunction,
-    selectedMarker?: MarkerItem | null,
+    selectedPlace?: Place | null,
   ): void => {
     mapService.addPlaceMarkers(
       map,
@@ -284,7 +283,7 @@ export const mapService = {
       placeTypeFilter,
       onClick,
       clearSelectedMarker,
-      selectedMarker,
+      selectedPlace,
     )
 
     mapService.addUserMarkers(
