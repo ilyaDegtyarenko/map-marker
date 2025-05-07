@@ -3,11 +3,11 @@
   lang="ts"
 >
   import type { MarkerItem } from '@/ts/types/map.ts'
+  import type { Place } from '@/ts/types/place.ts'
   import type { User } from '@/ts/types/user.ts'
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { mapService } from '@/services/map.service.ts'
-  import { userService } from '@/services/user.service.ts'
 
   type Props = {
     item: MarkerItem
@@ -45,48 +45,64 @@
     return t('person')
   })
 
-  const nearestUserNames = computed<string>(() => {
-    return userService.getUserNames(props.nearestUsers)
+  const nearestUserNamesWithDistance = computed<string>(() => {
+    return props.nearestUsers
+      .map((user) => {
+        const distance = mapService.getDistanceBetweenCoords(
+          [ user.address.geo.lat, user.address.geo.lng ],
+          (props.item as Place).coordinates,
+        )
+
+        return user.name + ` (${ distance })`
+      })
       .join(', ')
   })
 
   const listItems = computed<ListItem[]>(() => {
     if (mapService.isPlaceMarker(props.item)) {
-      return [
-        {
-          title: t('name'),
-          subtitle: props.item.name,
-        },
-        {
-          title: t('type'),
-          subtitle: t('placeType.' + props.item.type),
-        },
-        {
-          title: t('coordinates'),
-          subtitle: props.item.coordinates.join(', '),
-        },
-        {
-          title: t('nearest-people'),
-          subtitle: nearestUserNames.value,
-        },
-      ]
+      return getPlaceListItems(props.item)
     }
 
+    return getUserListItems(props.item)
+  })
+
+  const getPlaceListItems = (item: Place): ListItem[] => {
     return [
       {
-        title: t('name'),
-        subtitle: props.item.name,
+        title: t('place.name'),
+        subtitle: item.name,
       },
       {
-        title: t('phone'),
-        subtitle: props.item.phone,
+        title: t('type'),
+        subtitle: t('placeType.' + item.type),
       },
       {
         title: t('coordinates'),
-        subtitle: props.item.address.geo.lat + ', ' + props.item.address.geo.lng,
+        subtitle: item.coordinates.join(', '),
+      },
+      {
+        title: t('nearest-people'),
+        subtitle: nearestUserNamesWithDistance.value,
       },
     ]
-  })
+  }
+
+  const getUserListItems = (item: User): ListItem[] => {
+    return [
+      {
+        title: t('user.name'),
+        subtitle: item.name,
+      },
+      {
+        title: t('phone'),
+        subtitle: item.phone,
+      },
+      {
+        title: t('coordinates'),
+        subtitle: item.address.geo.lat + ', ' + item.address.geo.lng,
+      },
+    ]
+  }
 </script>
 
 <template>

@@ -226,4 +226,18 @@ export const mapService = {
       })
     }
   },
+
+  /**
+   * Calculates the distance between two geographical coordinates.
+   *
+   * @param origin - The starting point as a latitude and longitude tuple.
+   * @param target - The ending point as a latitude and longitude tuple.
+   * @returns {string} The calculated distance in kilometers, formatted as a string with one decimal place, followed by ' km'.
+   */
+  getDistanceBetweenCoords: (origin: L.LatLngTuple, target: L.LatLngTuple): string => {
+    const distanceInMeters = L.latLng(origin).distanceTo(L.latLng(target))
+    const distanceInKm = (distanceInMeters / 1000).toFixed(1)
+
+    return `${ distanceInKm } km`
+  },
 }
