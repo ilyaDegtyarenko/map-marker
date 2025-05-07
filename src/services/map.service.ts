@@ -177,38 +177,65 @@ export const mapService = {
   },
 
   /**
-   * Adds markers to a Leaflet map based on provided places, users, and filters.
+   * Adds place markers to a Leaflet map based on filtered places and selection criteria.
    *
-   * @param map - The Leaflet map instance to add markers to.
-   * @param places - A list of places to add as markers on the map.
-   * @param users - A list of users to add as markers on the map.
-   * @param nearestUsers - A list of nearest users to highlight on the map.
-   * @param placeTypeFilter - Filters to specify which types of places should have markers added.
-   * @param userShowAllFilter - A boolean flag indicating if all users should have markers added or just the nearest users.
-   * @param onClick - The callback function that will be triggered when a marker is clicked. It receives a `MarkerItem` as an argument.
-   * @param [selectedMarker] - An optional parameter representing the currently selected marker, if any.
-   * @returns {void} This function does not return any value.
+   * @param map The Leaflet map instance where markers will be added.
+   * @param places An array of all available places to potentially add as markers.
+   * @param placeTypeFilter An array of place types used to filter which places should be included as markers.
+   * @param onClick A callback function invoked when a marker is clicked, receiving the clicked marker as its argument.
+   * @param clearSelectedMarker A function invoked to clear the currently selected marker when its criteria are no longer met.
+   * @param [selectedMarker] The currently selected marker, if any, to differentiate its appearance or remove it if it no longer matches the filter.
+   * @returns {void}
    */
-  addMarkersToMap: (
+  addPlaceMarkers: (
     map: L.Map,
     places: Place[],
-    users: User[],
-    nearestUsers: User[],
     placeTypeFilter: PlaceTypeEnum[],
-    userShowAllFilter: boolean,
     onClick: (markerItem: MarkerItem) => void,
+    clearSelectedMarker: VoidFunction,
     selectedMarker?: MarkerItem | null,
   ): void => {
-    mapService.getFilteredPlaces(places, placeTypeFilter)
-      .forEach((place) => {
-        return mapService.addMarker(
-          map,
-          place,
-          selectedMarker?.id === place.id,
-          onClick,
-        )
-      })
+    const filteredPlaces = mapService.getFilteredPlaces(places, placeTypeFilter)
 
+    if (
+      selectedMarker
+      && mapService.isPlaceMarker(selectedMarker)
+      && !filteredPlaces.some((place) => place.id === selectedMarker.id)
+    ) {
+      clearSelectedMarker()
+    }
+
+    filteredPlaces.forEach((place) => {
+      return mapService.addMarker(
+        map,
+        place,
+        selectedMarker?.id === place.id,
+        onClick,
+      )
+    })
+  },
+
+  /**
+   * Adds user markers to a map.
+   *
+   * This function adds markers representing users to a Leaflet map based on the provided parameters.
+   *
+   * @param map - The Leaflet map instance where markers will be added.
+   * @param users - The array of all users to potentially display as markers on the map.
+   * @param nearestUsers - The subset of users identified as nearest, which may be highlighted.
+   * @param userShowAllFilter - A flag that determines whether markers for all users or only for the nearest users should be added.
+   * @param onClick - The callback function to be executed when a marker is clicked.
+   *
+   * If `userShowAllFilter` is true, markers for all users are added, with the nearest users highlighted.
+   * If `userShowAllFilter` is false, only markers for the nearest users are added.
+   */
+  addUserMarkers: (
+    map: L.Map,
+    users: User[],
+    nearestUsers: User[],
+    userShowAllFilter: boolean,
+    onClick: (markerItem: MarkerItem) => void,
+  ): void => {
     if (userShowAllFilter) {
       const nearestUserIds = userService.getUserIds(nearestUsers)
 
@@ -225,6 +252,48 @@ export const mapService = {
         mapService.addMarker(map, user, true, onClick)
       })
     }
+  },
+
+  /**
+   * Adds markers to a Leaflet map based on provided data and filters.
+   *
+   * @param map - The Leaflet map instance where the markers will be added.
+   * @param places - Array of places to display as markers on the map.
+   * @param users - Array of users to display as markers on the map.
+   * @param nearestUsers - Array of nearby users to display with a special emphasis.
+   * @param placeTypeFilter - Filter criteria for the types of places to display as markers.
+   * @param userShowAllFilter - Switch to determine if all users should be displayed, regardless of the nearest filter.
+   * @param onClick - Callback invoked when a marker is clicked. Receives the clicked marker item as an argument.
+   * @param clearSelectedMarker - Callback invoked to clear the currently selected marker on the map.
+   * @param [selectedMarker] - The currently selected marker item, or null/undefined if none is selected.
+   */
+  addMarkersToMap: (
+    map: L.Map,
+    places: Place[],
+    users: User[],
+    nearestUsers: User[],
+    placeTypeFilter: PlaceTypeEnum[],
+    userShowAllFilter: boolean,
+    onClick: (markerItem: MarkerItem) => void,
+    clearSelectedMarker: VoidFunction,
+    selectedMarker?: MarkerItem | null,
+  ): void => {
+    mapService.addPlaceMarkers(
+      map,
+      places,
+      placeTypeFilter,
+      onClick,
+      clearSelectedMarker,
+      selectedMarker,
+    )
+
+    mapService.addUserMarkers(
+      map,
+      users,
+      nearestUsers,
+      userShowAllFilter,
+      onClick,
+    )
   },
 
   /**

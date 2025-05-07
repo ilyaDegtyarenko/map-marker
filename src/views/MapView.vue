@@ -58,6 +58,12 @@
     nearestUsers.value = mapService.getNearestUsers(mapStore.users, latLng)
   }
 
+  const clearSelectedMarker = (): void => {
+    selectedMarker.value = null
+
+    nearestUsers.value = []
+  }
+
   const updateMarkers = debounceFn(() => {
     if (!map.value) {
       return
@@ -73,6 +79,7 @@
       mapStore.placeTypeFilter,
       mapStore.userShowAllFilter,
       onMarkerClick,
+      clearSelectedMarker,
       selectedMarker.value,
     )
   }, 500)
