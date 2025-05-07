@@ -7,6 +7,7 @@
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { mapService } from '@/services/map.service.ts'
+  import { userService } from '@/services/user.service.ts'
 
   type Props = {
     item: MarkerItem
@@ -45,7 +46,8 @@
   })
 
   const nearestUserNames = computed<string>(() => {
-    return props.nearestUsers.map(({ name }) => name).join(', ')
+    return userService.getUserNames(props.nearestUsers)
+      .join(', ')
   })
 
   const listItems = computed<ListItem[]>(() => {

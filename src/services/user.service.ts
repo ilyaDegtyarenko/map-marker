@@ -40,4 +40,24 @@ export const userService = {
       },
     }
   },
+
+  /**
+   * Extracts an array of user IDs from an array of user objects.
+   *
+   * @param users - An array of user objects.
+   * @returns An array containing the IDs of the users.
+   */
+  getUserIds: (users: User[]): User['id'][] => {
+    return users.map((user) => user.id)
+  },
+
+  /**
+   * Extracts an array of users' names from an array of user objects.
+   *
+   * @param users - An array of user objects.
+   * @returns An array containing the names of the users.
+   */
+  getUserNames: (users: User[]): User['name'][] => {
+    return users.map((user) => user.name)
+  },
 }
