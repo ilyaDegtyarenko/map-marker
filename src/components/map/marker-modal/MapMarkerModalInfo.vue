@@ -6,7 +6,6 @@
   import type { User } from '@/ts/types/user.ts'
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useSyncProp } from '@/composables/useSyncProp.ts'
   import { mapService } from '@/services/map.service.ts'
 
   type Props = {
@@ -20,7 +19,7 @@
   }
 
   type Emit = {
-    (event: 'update:item', value: null): void
+    (event: 'close'): void
   }
 
   const props = defineProps<Props>()
@@ -28,51 +27,45 @@
 
   const { t } = useI18n()
 
-  const itemModel = useSyncProp<MarkerItem | null>(props, 'item', emit)
-
   const showModal = computed<boolean>({
     get() {
-      return !!itemModel.value
+      return !!props.item
     },
     set() {
-      itemModel.value = null
+      emit('close')
     },
   })
 
   const cardTitle = computed<string>(() => {
-    if (mapService.isPlaceMarker(itemModel.value!)) {
-      return t('placeType.' + itemModel.value.type)
+    if (mapService.isPlaceMarker(props.item)) {
+      return t('placeType.' + props.item.type)
     }
 
     return t('person')
   })
 
-  const nearestUsersNames = computed<string>(() => {
+  const nearestUserNames = computed<string>(() => {
     return props.nearestUsers.map(({ name }) => name).join(', ')
   })
 
   const listItems = computed<ListItem[]>(() => {
-    if (!itemModel.value) {
-      return []
-    }
-
-    if (mapService.isPlaceMarker(itemModel.value)) {
+    if (mapService.isPlaceMarker(props.item)) {
       return [
         {
           title: t('name'),
-          subtitle: itemModel.value.name,
+          subtitle: props.item.name,
         },
         {
           title: t('type'),
-          subtitle: t('placeType.' + itemModel.value.type),
+          subtitle: t('placeType.' + props.item.type),
         },
         {
           title: t('coordinates'),
-          subtitle: itemModel.value.coordinates.join(', '),
+          subtitle: props.item.coordinates.join(', '),
         },
         {
           title: t('nearest-people'),
-          subtitle: nearestUsersNames.value,
+          subtitle: nearestUserNames.value,
         },
       ]
     }
@@ -80,15 +73,15 @@
     return [
       {
         title: t('name'),
-        subtitle: itemModel.value.name,
+        subtitle: props.item.name,
       },
       {
         title: t('phone'),
-        subtitle: itemModel.value.phone,
+        subtitle: props.item.phone,
       },
       {
         title: t('coordinates'),
-        subtitle: itemModel.value.address.geo.lat + ', ' + itemModel.value.address.geo.lng,
+        subtitle: props.item.address.geo.lat + ', ' + props.item.address.geo.lng,
       },
     ]
   })

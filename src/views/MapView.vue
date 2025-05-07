@@ -36,6 +36,7 @@
 
   const selectedMarker = ref<MarkerItem | null>(null)
   const selectedCoordinates = ref<L.LatLngLiteral | null>(null)
+  const showMarkerInfoForm = ref<boolean>(false)
   const showMarkerAddingForm = ref<boolean>(false)
   const nearestUsers = ref<User[]>([])
 
@@ -46,6 +47,7 @@
 
   const onMarkerClick = (markerItem: MarkerItem): void => {
     selectedMarker.value = markerItem
+    showMarkerInfoForm.value = true
 
     if (mapService.isPlaceMarker(markerItem)) {
       shownearestUsers(markerItem.coordinates)
@@ -143,17 +145,18 @@
 
     <Transition name="scale-transition">
       <MapMarkerModalAddFloatingActivator
-        v-if="!showMarkerAddingForm && !selectedMarker"
+        v-if="!showMarkerAddingForm && !showMarkerInfoForm"
         key="form-activator"
         @open="showMarkerAddingForm = true"
       />
     </Transition>
 
     <LazyMapMarkerModalInfo
-      v-if="selectedMarker"
+      v-if="showMarkerInfoForm && selectedMarker"
       key="marker-modal-info"
       v-model:item="selectedMarker"
       :nearest-users="nearestUsers"
+      @close="showMarkerInfoForm = false"
     />
 
     <LazyMapMarkerModalAdd
