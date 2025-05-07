@@ -4,6 +4,9 @@ import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 
+/**
+ * Creates an instance of the Vuetify plugin.
+ */
 export default createVuetify({
   components,
   directives,

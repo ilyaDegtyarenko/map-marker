@@ -1,7 +1,3 @@
-import type { Ref } from 'vue'
-
-export type MaybeRef<T> = T | Ref<T>
-
 export type AnyFn<T = unknown> = (...args: unknown[]) => T
 
 export type AnyObj<T = unknown> = { [key: string]: T }

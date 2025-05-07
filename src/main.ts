@@ -10,16 +10,20 @@ import pinia from '@/plugins/pinia.ts'
 import vuetify from '@/plugins/vuetify.ts'
 import fetchAppData from '@/plugins/fetchAppData.ts'
 
+// Create the Vue app instance.
 const app = createApp(App)
 
+// Register the plugins.
 app.use(router)
 app.use(i18n)
 app.use(pinia)
 app.use(vuetify)
 
+// Fetch app data.
 fetchAppData()
   .catch((error) => {
     throw new Error('Failed to fetch app data: ' + error.message)
   })
 
+// Mount the app.
 app.mount('#app')

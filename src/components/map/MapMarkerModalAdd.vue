@@ -9,7 +9,7 @@
   import { computed, ref, useTemplateRef } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useMapStore } from '@/stores/map.ts'
-  import { getPlaceTypeOptions } from '@/utils/getPlaceTypeOptions.ts'
+  import { mapService } from '@/services/map.service.ts'
 
   type Props = {
     coordinates?: L.LatLngLiteral | null
@@ -51,7 +51,9 @@
     return mapStore.places.reduce((result, value) => Math.max(result, value.id), 0)
   })
 
-  const placeTypeOptions = getPlaceTypeOptions()
+  const placeTypeOptions = computed(() => {
+    return mapService.getPlaceTypeOptions(t)
+  })
 
   const submit = async (): Promise<void> => {
     if (!formRef.value) {

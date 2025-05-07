@@ -2,14 +2,19 @@
   setup
   lang="ts"
 >
+  import { computed } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { useAppStore } from '@/stores/app.ts'
   import { useMapStore } from '@/stores/map.ts'
-  import { getPlaceTypeOptions } from '@/utils/getPlaceTypeOptions.ts'
+  import { mapService } from '@/services/map.service.ts'
 
+  const { t } = useI18n()
   const appStore = useAppStore()
   const mapStore = useMapStore()
 
-  const placeTypeOptions = getPlaceTypeOptions()
+  const placeTypeOptions = computed(() => {
+    return mapService.getPlaceTypeOptions(t)
+  })
 </script>
 
 <template>

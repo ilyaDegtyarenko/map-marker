@@ -7,11 +7,11 @@
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useSyncProp } from '@/composables/useSyncProp.ts'
-  import { isPlaceMarker } from '@/utils/isPlaceMarker.ts'
+  import { mapService } from '@/services/map.service.ts'
 
   type Props = {
     item: MarkerItem
-    nearbyUsers: User[]
+    nearestUsers: User[]
   }
 
   type ListItem = {
@@ -40,15 +40,15 @@
   })
 
   const cardTitle = computed<string>(() => {
-    if (isPlaceMarker(itemModel.value!)) {
+    if (mapService.isPlaceMarker(itemModel.value!)) {
       return t('placeType.' + itemModel.value.type)
     }
 
     return t('person')
   })
 
-  const nearbyUsersNames = computed<string>(() => {
-    return props.nearbyUsers.map(({ name }) => name).join(', ')
+  const nearestUsersNames = computed<string>(() => {
+    return props.nearestUsers.map(({ name }) => name).join(', ')
   })
 
   const listItems = computed<ListItem[]>(() => {
@@ -56,7 +56,7 @@
       return []
     }
 
-    if (isPlaceMarker(itemModel.value)) {
+    if (mapService.isPlaceMarker(itemModel.value)) {
       return [
         {
           title: t('name'),
@@ -71,8 +71,8 @@
           subtitle: itemModel.value.coordinates.join(', '),
         },
         {
-          title: t('nearby-people'),
-          subtitle: nearbyUsersNames.value,
+          title: t('nearest-people'),
+          subtitle: nearestUsersNames.value,
         },
       ]
     }

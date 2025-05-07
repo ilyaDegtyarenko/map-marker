@@ -20,5 +20,5 @@
   "form.rule.place.name-max": "Назва має містити не більше 20 символів",
   "form.rule.place.type-required": "Тип обов'язковий",
   "form.rule.place.coordinates-required": "Координати обов'язкові",
-  "nearby-people": "Люди поблизу"
+  "nearest-people": "Люди поблизу"
 }

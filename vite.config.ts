@@ -12,12 +12,12 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
   ],
-  resolve: {
+  resolve: { // https://vite.dev/config/shared-options.html
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  server: {
+  server: { // https://vite.dev/config/server-options.html
     port: Number(process.env.NODE_PORT) || 5173,
     host: true,
   },

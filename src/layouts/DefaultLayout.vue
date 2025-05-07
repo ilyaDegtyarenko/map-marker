@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { useAppStore } from '@/stores/app.ts'
+
   import TheHeader from '@/components/TheHeader.vue'
   import TheFooter from '@/components/TheFooter.vue'
   import TheLoader from '@/components/TheLoader.vue'

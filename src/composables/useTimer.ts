@@ -8,6 +8,24 @@ type Options = {
   callAtStart?: boolean
 }
 
+/**
+ * A utility function that manages timer functionalities such as starting,
+ * pausing, stopping, and controlling execution based on a specified delay or interval.
+ *
+ * @template Callback - The type of the callback function to be executed.
+ * @param fn - The function to be executed after the timer's delay or at set intervals.
+ * @param ms - The delay in milliseconds for the timer or the interval between executions.
+ * @param [options={}] - Object to configure the timer behavior.
+ * @param [options.interval=false] - If true, the timer runs as an interval, executing the callback repeatedly.
+ * @param [options.immediate=false] - If true, the timer starts immediately upon initialization.
+ * @param [options.callAtStart=false] - If true, the callback is executed immediately when the timer starts.
+ * @returns An object providing control over the timer, with the following properties:
+ * - `id`: A reactive reference to the timer ID.
+ * - `pending`: A readonly reference indicating whether the timer is currently active.
+ * - `start`: A function to start or restart the timer, optionally accepting arguments to pass to the callback.
+ * - `pause`: A function to pause the timer, preserving the remaining time for resumption.
+ * - `stop`: A function to stop and clear the timer completely.
+ */
 export const useTimer = <Callback extends AnyFn>(
   fn: Callback,
   ms: number,

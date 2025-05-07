@@ -10,10 +10,11 @@ export const useMapStore = defineStore('mapStore', () => {
   const placeTypeFilter = ref<PlaceTypeEnum[]>(Object.values(PlaceTypeEnum))
   const users = ref<User[]>([])
   const initialLocation = shallowRef<LatLngLiteral>({
-    lat: 0,
-    lng: 0,
+    lat: 48.46455576704108,
+    lng: 35.04610776901246,
   })
 
+  // A computed property that indicates whether the map data has been loaded.
   const isDataLoaded = computed<boolean>(() => {
     return Boolean(
       places.value.length

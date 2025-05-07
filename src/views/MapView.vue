@@ -7,15 +7,15 @@
   import type { User } from '@/ts/types/user.ts'
   import { defineAsyncComponent, ref, shallowRef, useTemplateRef, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useMapStore } from '@/stores/map.ts'
   import L from 'leaflet'
+  import { useMapStore } from '@/stores/map.ts'
+  import { mapService } from '@/services/map.service.ts'
+  import { debounceFn } from '@/utils/debounce.ts'
+
   import MapFilters from '@/components/map/MapFilters.vue'
   import AppPage from '@/components/app/AppPage.vue'
   import MapMarkerModalAddFloatingActivator
     from '@/components/map/MapMarkerModalAddFloatingActivator.vue'
-  import { debounceFn } from '@/utils/debounce.ts'
-  import { getMarkerData } from '@/utils/getMarkerData.ts'
-  import { isPlaceMarker } from '@/utils/isPlaceMarker.ts'
 
   const LazyMapMarkerModalInfo = defineAsyncComponent(
     () => import('@/components/map/MapMarkerModalInfo.vue'),
@@ -37,7 +37,7 @@
   const selectedMarker = ref<MarkerItem | null>(null)
   const selectedCoordinates = ref<L.LatLngLiteral | null>(null)
   const showMarkerAddingForm = ref<boolean>(false)
-  const nearbyUsers = ref<User[]>([])
+  const nearestUsers = ref<User[]>([])
 
   const onMapClick = (event: L.LeafletMouseEvent): void => {
     selectedCoordinates.value = event.latlng
@@ -47,36 +47,13 @@
   const onMarkerClick = (markerItem: MarkerItem): void => {
     selectedMarker.value = markerItem
 
-    if (isPlaceMarker(markerItem)) {
-      showNearbyUsers(markerItem.coordinates)
+    if (mapService.isPlaceMarker(markerItem)) {
+      shownearestUsers(markerItem.coordinates)
     }
   }
 
-  const addMarker = (markerItem: MarkerItem, active = false): void => {
-    const markerData = getMarkerData(markerItem, active)
-
-    const marker = L
-      .marker(markerData.coordinates, { icon: markerData.icon })
-      .addTo(map.value!)
-
-    marker.on('click', () => onMarkerClick(markerItem))
-  }
-
-  const showNearbyUsers = (latLng: L.LatLngTuple): void => {
-    const point = L.latLng(latLng)
-
-    const userPoints = mapStore.users.map((user) => {
-      return {
-        user,
-        latLng: L.latLng(user.address.geo),
-      }
-    })
-
-    userPoints.sort((a, b) => {
-      return point.distanceTo(a.latLng) - point.distanceTo(b.latLng)
-    })
-
-    nearbyUsers.value = userPoints.slice(0, 3).map(({ user }) => user)
+  const shownearestUsers = (latLng: L.LatLngTuple): void => {
+    nearestUsers.value = mapService.getNearestUsers(mapStore.users, latLng)
   }
 
   const updateMarkers = debounceFn(() => {
@@ -84,17 +61,18 @@
       return
     }
 
-    map.value.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        map.value!.removeLayer(layer)
-      }
-    })
+    mapService.clearAllMarkers(map.value)
 
-    mapStore.places
-      .filter((place) => mapStore.placeTypeFilter.includes(place.type))
-      .forEach((place) => addMarker(place, selectedMarker.value?.id === place.id))
+    const filteredPlaces = mapService
+      .getFilteredPlaces(mapStore.places, mapStore.placeTypeFilter)
 
-    nearbyUsers.value.forEach((user) => addMarker(user, true))
+    mapService.addMarkersToMap(
+      map.value,
+      filteredPlaces,
+      nearestUsers.value,
+      onMarkerClick,
+      selectedMarker.value,
+    )
   }, 500)
 
   const initMap = (): void => {
@@ -104,10 +82,7 @@
 
     map.value = L
       .map(mapRef.value!)
-      .setView([
-        mapStore.initialLocation.lat,
-        mapStore.initialLocation.lng,
-      ], INITIAL_ZOOM)
+      .setView(mapStore.initialLocation, INITIAL_ZOOM)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
@@ -123,6 +98,11 @@
     updateMarkers()
   }
 
+  const closeMarkerAddingForm = (): void => {
+    selectedCoordinates.value = null
+    showMarkerAddingForm.value = false
+  }
+
   const createMarker = (place: Place): void => {
     mapStore.addPlace(place)
 
@@ -131,11 +111,6 @@
     onMarkerClick(place)
 
     updateMarkers()
-  }
-
-  const closeMarkerAddingForm = (): void => {
-    selectedCoordinates.value = null
-    showMarkerAddingForm.value = false
   }
 
   const stopWatcher = watch(() => mapStore.isDataLoaded, (value) => {
@@ -150,7 +125,7 @@
 
   watch([
     locale,
-    nearbyUsers,
+    nearestUsers,
     () => mapStore.placeTypeFilter,
     () => mapStore.places,
   ], updateMarkers)
@@ -178,7 +153,7 @@
       v-if="selectedMarker"
       key="marker-modal-info"
       v-model:item="selectedMarker"
-      :nearby-users="nearbyUsers"
+      :nearest-users="nearestUsers"
     />
 
     <LazyMapMarkerModalAdd
