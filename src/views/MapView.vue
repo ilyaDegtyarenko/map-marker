@@ -46,16 +46,30 @@
   }
 
   const onMarkerClick = (markerItem: MarkerItem): void => {
+    if (
+      selectedMarker.value
+      && mapService.isPlaceMarker(selectedMarker.value)
+      && (selectedMarker.value.id === markerItem.id)
+    ) {
+      clearSelectedMarker()
+
+      return
+    }
+
+    setSelectedMarker(markerItem)
+  }
+
+  const showNearestUsers = (latLng: L.LatLngTuple): void => {
+    nearestUsers.value = mapService.getNearestUsers(mapStore.users, latLng)
+  }
+
+  const setSelectedMarker = (markerItem: MarkerItem): void => {
     selectedMarker.value = markerItem
     showMarkerInfoForm.value = true
 
     if (mapService.isPlaceMarker(markerItem)) {
       showNearestUsers(markerItem.coordinates)
     }
-  }
-
-  const showNearestUsers = (latLng: L.LatLngTuple): void => {
-    nearestUsers.value = mapService.getNearestUsers(mapStore.users, latLng)
   }
 
   const clearSelectedMarker = (): void => {
