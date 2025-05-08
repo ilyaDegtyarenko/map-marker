@@ -7,7 +7,7 @@
   import type { User } from '@/ts/types/user.ts'
   import {
     ref, shallowRef, useTemplateRef, computed, watch,
-    defineAsyncComponent, onErrorCaptured,
+    defineAsyncComponent, onErrorCaptured, onMounted, nextTick,
   } from 'vue'
   import { useI18n } from 'vue-i18n'
   import L from 'leaflet'
@@ -241,16 +241,18 @@
     return false // prevent propagation
   })
 
-  // Initialize the map when data is loaded
-  const stopWatcher = watch(() => mapStore.isDataLoaded, (value) => {
-    if (!value) {
-      return
-    }
+  onMounted(() => {
+    // Initialize the map when data is loaded
+    const stopWatcher = watch(() => mapStore.isDataLoaded, (value) => {
+      if (!value) {
+        return
+      }
 
-    initMap()
+      initMap()
 
-    stopWatcher()
-  }, { immediate: true })
+      nextTick(() => stopWatcher())
+    }, { immediate: true })
+  })
 
   // Update markers when relevant data changes
   watch([
