@@ -77,7 +77,6 @@
 <template>
   <v-dialog
     :model-value="true"
-    :scrim="false"
     max-width="400"
     @update:model-value="emit('close')"
   >

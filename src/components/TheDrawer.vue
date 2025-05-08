@@ -11,7 +11,6 @@
   <v-navigation-drawer
     v-model="appStore.showDrawer"
     temporary
-    :scrim="false"
     location="right"
     class="!z-[1001]"
   >

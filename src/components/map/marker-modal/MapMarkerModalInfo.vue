@@ -108,7 +108,6 @@
 <template>
   <v-dialog
     v-model="showModal"
-    :scrim="false"
     max-width="400"
   >
     <template v-slot:default="{ isActive }">
