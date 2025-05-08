@@ -15,8 +15,13 @@ export default async (): Promise<void> => {
   const appStore = useAppStore()
   const mapStore = useMapStore()
 
-  const { data: places } = await mapService.getAllPlaces()
-  const { data: users } = await userService.getAll()
+  const [
+    { data: places },
+    { data: users },
+  ] = await Promise.all([
+    mapService.getAllPlaces(),
+    userService.getAll(),
+  ])
 
   mapStore.places = places
   mapStore.users = users
