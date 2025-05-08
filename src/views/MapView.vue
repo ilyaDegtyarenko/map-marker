@@ -115,6 +115,12 @@
     )
   }, 500)
 
+  const closeMarkerModalInfo = (): void => {
+    showMarkerInfoForm.value = false
+
+    selectedUser.value = null
+  }
+
   const initMap = (): void => {
     if (map.value) {
       return
@@ -195,7 +201,7 @@
       key="marker-modal-info"
       v-model:item="selectedMarker"
       :nearest-users="nearestUsers"
-      @close="showMarkerInfoForm = false"
+      @close="closeMarkerModalInfo()"
     />
 
     <LazyMapMarkerModalAdd
