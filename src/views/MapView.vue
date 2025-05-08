@@ -97,6 +97,8 @@
    */
   const onMarkerClick = (markerItem: MarkerItem): void => {
     if (selectedMarker.value?.id === markerItem.id) {
+      showMarkerInfoForm.value = true
+
       return
     }
 
