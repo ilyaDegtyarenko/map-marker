@@ -27,5 +27,8 @@
   },
   "user": {
     "name": "Name"
-  }
+  },
+  "general-information": "General information",
+  "latitude": "Latitude",
+  "longitude": "Longitude"
 }

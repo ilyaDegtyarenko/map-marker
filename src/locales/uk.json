@@ -27,5 +27,8 @@
   },
   "user": {
     "name": "Імʼя"
-  }
+  },
+  "general-information": "Основна інформація",
+  "latitude": "Широта",
+  "longitude": "Довгота"
 }

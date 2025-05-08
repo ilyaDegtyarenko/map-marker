@@ -87,6 +87,10 @@
             ref="formRef"
             class="flex flex-col gap-2"
           >
+            <v-card-subtitle class="pl-0">
+              {{ $t('general-information') }}
+            </v-card-subtitle>
+
             <v-text-field
               v-model="formValues.name"
               :counter="20"
@@ -110,8 +114,9 @@
             <v-row>
               <v-col>
                 <v-number-input
-                  v-model="formValues.lat"
+                  v-model.number="formValues.lat"
                   :rules="formRules.coordinates"
+                  :label="$t('latitude')"
                   required
                   :precision="null"
                   control-variant="hidden"
@@ -120,8 +125,9 @@
 
               <v-col>
                 <v-number-input
-                  v-model="formValues.lng"
+                  v-model.number="formValues.lng"
                   :rules="formRules.coordinates"
+                  :label="$t('longitude')"
                   required
                   :precision="null"
                   control-variant="hidden"
