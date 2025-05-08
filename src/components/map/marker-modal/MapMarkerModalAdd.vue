@@ -97,6 +97,7 @@
               :rules="formRules.name"
               :label="$t('place.name')"
               required
+              autofocus
             />
 
             <v-select
